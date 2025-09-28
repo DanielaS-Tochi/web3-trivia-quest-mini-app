@@ -1,0 +1,12 @@
+{
+  "accountAssociation": {
+    "header": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9",
+    "payload": "eyJpc3MiOiJodHRwczovL3lvdXItZG9tYWluLnZlcmNlbC5hcHAiLCJhdWQiOiJmYXJjYXN0ZXIiLCJleHAiOjE3MzUwNzU2MDAsImZpZCI6IjEyMzQ1In0",
+    "signature": "signature"
+  },
+  "name": "Web3 Trivia Quest",
+  "homeUrl": "https://your-domain.vercel.app",
+  "iconUrl": "https://your-domain.vercel.app/icon.png",
+  "imageUrl": "https://your-domain.vercel.app/api/og",
+  "description": "Learn Web3 while you compete in trivia challenges"
+}
