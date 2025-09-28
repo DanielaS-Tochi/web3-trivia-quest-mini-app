@@ -1,5 +1,10 @@
 # Web3 Trivia Quest - Farcaster Mini App
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+
+A fully-featured Web3 educational trivia game built as a Farcaster Mini App. Test your blockchain knowledge while competing with other players!
+
 A fully-featured Web3 educational trivia game built as a Farcaster Mini App. Players can test their Web3 knowledge, compete on global leaderboards, and learn while having fun.
 
 ## Features

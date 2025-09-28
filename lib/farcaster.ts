@@ -1,5 +1,3 @@
-import { FrameRequest, getFrameMessage } from '@farcaster/core';
-
 export interface FarcasterUser {
   fid: number;
   username?: string;
@@ -7,13 +5,21 @@ export interface FarcasterUser {
   pfpUrl?: string;
 }
 
-export async function validateFrameRequest(request: Request): Promise<FarcasterUser | null> {
+export async function validateFrameRequest(request: any): Promise<FarcasterUser | null> {
   try {
-    const body = await request.json();
-    
-    // In a real implementation, you would validate the frame signature
-    // For now, we'll extract the user data from the request
-    if (body.untrustedData?.fid) {
+    // Support both Fetch Request (Edge) and NextApiRequest (has .body)
+    let body: any;
+    if (request && typeof request.json === 'function') {
+      body = await request.json();
+    } else if (request && 'body' in request) {
+      body = request.body;
+    } else {
+      return null;
+    }
+
+    // In a real implementation, validate the frame signature here.
+    // For now, extract user data from untrustedData (as provided by Farcaster frames).
+    if (body?.untrustedData?.fid) {
       return {
         fid: body.untrustedData.fid,
         username: body.untrustedData.username || `user${body.untrustedData.fid}`,
@@ -21,7 +27,7 @@ export async function validateFrameRequest(request: Request): Promise<FarcasterU
         pfpUrl: body.untrustedData.pfpUrl,
       };
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error validating frame request:', error);
