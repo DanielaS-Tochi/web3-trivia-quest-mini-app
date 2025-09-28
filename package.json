@@ -14,12 +14,14 @@
   "dependencies": {
     "@farcaster/core": "^0.18.7",
     "@supabase/supabase-js": "^2.58.0",
+    "clsx": "^2.1.1",
     "frog": "^0.18.3",
     "hono": "^4.9.9",
     "lucide-react": "^0.390.0",
     "next": "^15.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tailwind-merge": "^3.3.1",
     "viem": "^2.37.8"
   },
   "devDependencies": {
