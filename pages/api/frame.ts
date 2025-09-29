@@ -1,9 +1,31 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { validateFrameRequest, generateFrameImageUrl, createFrameMetadata } from '@/lib/farcaster';
+import { validateFrameRequest, generateFrameImageUrl, createFrameMetadata, FarcasterUser } from '@/lib/farcaster';
 import { getRandomQuestions, getQuestionById } from '@/lib/questions';
 import { generateSessionId } from '@/lib/utils';
 
-const sessions = new Map();
+interface FrameState {
+  screen: string;
+  fid?: number | string;
+  sessionId?: string;
+  language?: 'en' | 'es';
+  questions?: string[];
+  currentQuestionIndex?: number;
+  score?: number;
+  answers?: Record<string, number>;
+  finalScore?: number;
+}
+
+interface SessionState {
+  sessionId: string;
+  fid: number | string;
+  language: 'en' | 'es';
+  questions: string[];
+  currentQuestionIndex: number;
+  score: number;
+  answers: Record<string, number>;
+}
+
+const sessions = new Map<string, SessionState>();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -16,8 +38,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Invalid frame request' });
     }
 
-    const { buttonIndex, inputText, state } = req.body.untrustedData || {};
-    const currentState = state ? JSON.parse(decodeURIComponent(state)) : null;
+  const { buttonIndex, state } = req.body.untrustedData || {};
+  const currentState: FrameState | null = state ? JSON.parse(decodeURIComponent(state)) : null;
 
     // Handle different actions based on button pressed and current state
     if (!currentState) {
@@ -28,8 +50,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     switch (currentState.screen) {
       case 'home':
         return handleHomeScreen(req, res, user, buttonIndex);
-      case 'language':
-        return handleLanguageSelection(req, res, user, buttonIndex, currentState);
+    case 'language':
+      return handleLanguageSelection(req, res, user, buttonIndex, currentState);
       case 'game':
         return handleGameScreen(req, res, user, buttonIndex, currentState);
       case 'leaderboard':
@@ -39,13 +61,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       default:
         return handleHomeScreen(req, res, user, 1);
     }
-  } catch (error) {
-    console.error('Frame handler error:', error);
+  } catch (_error) {
+    console.error('Frame handler error:', _error);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
 
-async function handleHomeScreen(req: NextApiRequest, res: NextApiResponse, user: any, buttonIndex?: number) {
+async function handleHomeScreen(req: NextApiRequest, res: NextApiResponse, user: FarcasterUser, buttonIndex?: number) {
   const state = { screen: 'home', fid: user.fid };
   const image = generateFrameImageUrl('Web3 Trivia Quest', 'Learn Web3 while you compete');
   
@@ -83,13 +105,13 @@ async function handleHomeScreen(req: NextApiRequest, res: NextApiResponse, user:
   });
 }
 
-async function handleLanguageSelection(req: NextApiRequest, res: NextApiResponse, user: any, buttonIndex: number, currentState: any) {
+async function handleLanguageSelection(req: NextApiRequest, res: NextApiResponse, user: FarcasterUser, buttonIndex: number, _currentState: FrameState | null) {
   if (buttonIndex === 3) {
     // Back button
     return handleHomeScreen(req, res, user);
   }
 
-  const language = buttonIndex === 1 ? 'en' : 'es';
+  const language = (buttonIndex === 1 ? 'en' : 'es') as 'en' | 'es';
   const questions = getRandomQuestions(5);
   const sessionId = generateSessionId();
   
@@ -128,7 +150,8 @@ async function handleLanguageSelection(req: NextApiRequest, res: NextApiResponse
   });
 }
 
-async function handleGameScreen(req: NextApiRequest, res: NextApiResponse, user: any, buttonIndex: number, currentState: any) {
+async function handleGameScreen(req: NextApiRequest, res: NextApiResponse, user: FarcasterUser, buttonIndex: number, currentState: FrameState | null) {
+  if (!currentState || !currentState.sessionId) return handleHomeScreen(req, res, user);
   const session = sessions.get(currentState.sessionId);
   if (!session) {
     return handleHomeScreen(req, res, user);
@@ -207,7 +230,7 @@ async function handleGameScreen(req: NextApiRequest, res: NextApiResponse, user:
   });
 }
 
-async function handleLeaderboardScreen(req: NextApiRequest, res: NextApiResponse, user: any, buttonIndex: number, currentState: any) {
+async function handleLeaderboardScreen(req: NextApiRequest, res: NextApiResponse, user: FarcasterUser, buttonIndex: number, currentState: FrameState | null) {
   if (buttonIndex === 2) {
     // Back to home
     return handleHomeScreen(req, res, user);
@@ -216,11 +239,11 @@ async function handleLeaderboardScreen(req: NextApiRequest, res: NextApiResponse
   // Fetch leaderboard data
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/leaderboard`);
-    const data = await response.json();
+    const data: { leaderboard?: Array<{ username?: string; total_score?: number; fid?: string }> } = await response.json();
     
     let leaderboardText = 'Top Players:\n';
-    data.leaderboard.slice(0, 5).forEach((player: any, index: number) => {
-      leaderboardText += `${index + 1}. ${player.username}: ${player.total_score}\n`;
+    (data.leaderboard ?? []).slice(0, 5).forEach((player, index) => {
+      leaderboardText += `${index + 1}. ${player.username ?? player.fid ?? ''}: ${player.total_score ?? 0}\n`;
     });
     
     const image = generateFrameImageUrl('Global Leaderboard', leaderboardText);
@@ -235,7 +258,8 @@ async function handleLeaderboardScreen(req: NextApiRequest, res: NextApiResponse
       ...metadata,
       state: encodeURIComponent(JSON.stringify(currentState)),
     });
-  } catch (error) {
+  } catch (_error) {
+    console.error('Leaderboard fetch error:', _error);
     const image = generateFrameImageUrl('Leaderboard', 'Error loading leaderboard');
     const metadata = createFrameMetadata(
       image,
@@ -250,7 +274,7 @@ async function handleLeaderboardScreen(req: NextApiRequest, res: NextApiResponse
   }
 }
 
-async function handleInstructionsScreen(req: NextApiRequest, res: NextApiResponse, user: any, buttonIndex: number, currentState: any) {
+async function handleInstructionsScreen(req: NextApiRequest, res: NextApiResponse, user: FarcasterUser, buttonIndex: number, currentState: FrameState | null) {
   const instructions = `How to Play:
 • Answer Web3 trivia questions
 • Earn 1 point per correct answer  

@@ -47,7 +47,8 @@ export default function Home() {
       } else {
         throw new Error('Failed to save score');
       }
-    } catch (error) {
+    } catch (_error) {
+      console.error('Save score error:', _error);
       alert(t('errorSavingScore', language));
     } finally {
       setGameLoading(false);
@@ -89,10 +90,13 @@ export default function Home() {
           fakeUser={fakeUser}
         />
       )}
-      {screen === 'game' && gameSession && (
-        <GameScreen
-          gameSession={gameSession}
-          currentQuestion={getQuestionById(gameSession.questions[gameSession.currentQuestionIndex])!}
+      {screen === 'game' && gameSession && (() => {
+        const q = getQuestionById(gameSession.questions[gameSession.currentQuestionIndex]);
+        if (!q) return null;
+        return (
+          <GameScreen
+            gameSession={gameSession}
+            currentQuestion={q}
           language={language}
           showFeedback={showFeedback}
           currentAnswer={currentAnswer}
@@ -101,8 +105,9 @@ export default function Home() {
           onSaveScore={saveScore}
           onPlayAgain={() => { startGame(); setScreen('game'); }}
           onBackToHome={handleBackToHome}
-        />
-      )}
+          />
+        );
+      })()}
       {screen === 'leaderboard' && (
         <LeaderboardScreen
           language={language}

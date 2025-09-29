@@ -5,8 +5,8 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-  role={props.role ?? 'region'}
-  aria-label={props['aria-label'] ?? 'card'}
+      role={props.role ?? 'region'}
+      aria-label={props['aria-label'] ?? 'card'}
       className={cn(
         'rounded-2xl border border-gray-200 bg-white/95 dark:bg-slate-900/70 dark:border-slate-700 backdrop-blur-sm shadow-xl',
         className
@@ -53,14 +53,12 @@ const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLPara
 );
 CardDescription.displayName = 'CardDescription';
 
-
 const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
-
 
 const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
