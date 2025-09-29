@@ -38,6 +38,6 @@ export function InstructionsScreen({ language, onBackToHome }: InstructionsScree
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }

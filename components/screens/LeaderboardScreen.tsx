@@ -67,6 +67,6 @@ export function LeaderboardScreen({
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }

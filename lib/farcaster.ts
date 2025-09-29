@@ -5,13 +5,28 @@ export interface FarcasterUser {
   pfpUrl?: string;
 }
 
-export async function validateFrameRequest(request: any): Promise<FarcasterUser | null> {
+interface FrameRequestBody {
+  untrustedData?: {
+    fid?: number;
+    username?: string;
+    displayName?: string;
+    pfpUrl?: string;
+  };
+}
+
+type RequestWithBody = {
+  body: FrameRequestBody;
+} | {
+  json(): Promise<FrameRequestBody>;
+};
+
+export async function validateFrameRequest(request: RequestWithBody): Promise<FarcasterUser | null> {
   try {
     // Support both Fetch Request (Edge) and NextApiRequest (has .body)
-    let body: any;
-    if (request && typeof request.json === 'function') {
+    let body: FrameRequestBody;
+    if ('json' in request && typeof request.json === 'function') {
       body = await request.json();
-    } else if (request && 'body' in request) {
+    } else if ('body' in request) {
       body = request.body;
     } else {
       return null;

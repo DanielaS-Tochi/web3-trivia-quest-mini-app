@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       // Get existing player or create new one
-      let { data: player, error: fetchError } = await supabaseAdmin
+      const { data: player, error: fetchError } = await supabaseAdmin
         .from('player_scores')
         .select('*')
         .eq('fid', fid)

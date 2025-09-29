@@ -113,6 +113,6 @@ export function GameScreen({
           )}
         </CardContent>
       </Card>
-    </div>
+    </PageLayout>
   );
 }
