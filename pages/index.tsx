@@ -24,7 +24,11 @@ export default function Home() {
     resetGame,
   } = useGameSession(language);
   const { leaderboard, loading: leaderboardLoading, loadLeaderboard } = useLeaderboard();
-  const [fakeUser] = useState({ fid: '12345', username: 'demo_user' });
+  // Usuario demo temporal con ID único para desarrollo
+  const [fakeUser] = useState({ 
+    fid: `demo_${Date.now()}`, 
+    username: `Demo User ${new Date().toLocaleTimeString()}`
+  });
 
   const saveScore = async () => {
     if (!gameSession) return;

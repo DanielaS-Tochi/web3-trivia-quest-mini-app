@@ -3,27 +3,25 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-A fully-featured Web3 educational trivia game built as a Farcaster Mini App. Test your blockchain knowledge while competing with other players!
-
-A fully-featured Web3 educational trivia game built as a Farcaster Mini App. Players can test their Web3 knowledge, compete on global leaderboards, and learn while having fun.
+Un juego educativo de trivia sobre Web3 construido como Mini App para Farcaster. ¡Pon a prueba tus conocimientos blockchain mientras compites con otros jugadores!
 
 ## Features
 
-### Core Functionality
-- **Interactive Trivia**: 20+ Web3 questions covering blockchain, NFTs, DeFi, DAOs, and more
-- **Global Leaderboard**: Persistent rankings using Supabase database
-- **Bilingual Support**: Full English and Spanish localization
-- **Daily Limits**: Anti-cheating with 5 sessions per day per user
-- **Farcaster Integration**: Uses FID for user identification
-- **Mobile Optimized**: Responsive design for Warpcast and other Farcaster clients
+### Funcionalidad Principal
+- **Trivia Interactiva**: 20+ preguntas sobre Web3 cubriendo blockchain, NFTs, DeFi, DAOs y más
+- **Ranking Global**: Clasificación persistente usando Supabase
+- **Soporte Bilingüe**: Localización completa en inglés y español
+- **Diseño Accesible**: Alto contraste y legibilidad mejorada
+- **Integración con Farcaster**: Usa FID para identificación de usuarios
+- **Optimizado para Móvil**: Diseño responsive para Warpcast y otros clientes Farcaster
 
-### Technical Features
-- **Next.js 13+** with App Router
-- **Supabase** for database and authentication
-- **Frog Framework** for Farcaster Frame handling
-- **TypeScript** for type safety
-- **Tailwind CSS** for modern styling
-- **Edge Functions** for OG image generation
+### Características Técnicas
+- **Next.js 14** con App Router y Server Components
+- **Supabase** para base de datos y autenticación
+- **Frog Framework** para manejo de Frames de Farcaster
+- **TypeScript** para seguridad de tipos
+- **Tailwind CSS** para estilos modernos
+- **Edge Functions** para generación de imágenes OG
 
 ## Setup Instructions
 

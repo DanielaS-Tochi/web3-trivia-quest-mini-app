@@ -24,3 +24,8 @@ dist-ssr
 # Next.js build output
 .next
 .next
+
+# Environment and build files
+.env.local
+.next
+node_modules

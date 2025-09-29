@@ -20,11 +20,11 @@ export interface GameSession {
 }
 
 export interface LeaderboardEntry {
-  rank: number;
   fid: string;
-  username: string | null;
-  total_score: number;
-  sessions_today: number;
+  username: string;
+  score: number;
+  isCurrentUser?: boolean;
+  rank?: number;
 }
 
 export type Language = 'en' | 'es';

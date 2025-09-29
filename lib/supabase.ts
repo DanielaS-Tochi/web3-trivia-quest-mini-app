@@ -1,10 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 
+  (process.env.NODE_ENV === 'development' ? 'http://localhost:54321' : undefined);
 
-if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceRoleKey) {
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  (process.env.NODE_ENV === 'development' ? 'dummy-anon-key' : undefined);
+
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  (process.env.NODE_ENV === 'development' ? 'dummy-service-key' : undefined);
+
+if (process.env.NODE_ENV !== 'development' && 
+    (!supabaseUrl || !supabaseAnonKey || !supabaseServiceRoleKey)) {
   throw new Error('Missing required Supabase environment variables');
 }
 
