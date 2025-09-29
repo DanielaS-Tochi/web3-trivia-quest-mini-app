@@ -8,7 +8,7 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
       role={props.role ?? 'region'}
       aria-label={props['aria-label'] ?? 'card'}
       className={cn(
-        'rounded-2xl border border-gray-200 bg-white/95 dark:bg-slate-900/70 dark:border-slate-700 backdrop-blur-sm shadow-xl',
+        'rounded-2xl border border-gray-300 bg-white/98 dark:bg-slate-800 dark:border-slate-600 backdrop-blur-sm shadow-xl text-gray-900 dark:text-gray-100',
         className
       )}
       {...props}

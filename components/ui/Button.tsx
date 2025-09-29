@@ -13,11 +13,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'default', size = 'md', ...props }, ref) => {
     const base = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none';
     const variants: Record<Variant, string> = {
-      default: 'bg-blue-600 text-white hover:bg-blue-700',
-      secondary: 'bg-purple-600 text-white hover:bg-purple-700',
-      outline: 'border border-gray-300 bg-transparent text-gray-800 hover:bg-gray-50',
-      success: 'bg-green-600 text-white hover:bg-green-700',
-      danger: 'bg-red-600 text-white hover:bg-red-700',
+      default: 'bg-blue-700 text-white hover:bg-blue-800 focus:ring-2 focus:ring-blue-500',
+      secondary: 'bg-purple-700 text-white hover:bg-purple-800 focus:ring-2 focus:ring-purple-500',
+      outline: 'border-2 border-gray-600 bg-transparent text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-2 focus:ring-gray-500',
+      success: 'bg-green-700 text-white hover:bg-green-800 focus:ring-2 focus:ring-green-500',
+      danger: 'bg-red-700 text-white hover:bg-red-800 focus:ring-2 focus:ring-red-500',
     };
 
     const sizes: Record<Size, string> = {

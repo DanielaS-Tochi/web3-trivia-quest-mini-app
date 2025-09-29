@@ -54,7 +54,7 @@ export function useGameSession(language: Language) {
       }
       setShowFeedback(false);
       setCurrentAnswer(null);
-    }, 2000);
+    }, 5000); // Aumentado a 5 segundos para dar más tiempo de lectura
   };
 
   const resetGame = () => {

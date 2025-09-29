@@ -30,11 +30,11 @@ export function HomeScreen({
           <CardTitle className="text-3xl mb-2 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
             {t('welcome', language)}
           </CardTitle>
-          <p className="text-gray-600 text-lg">{t('subtitle', language)}</p>
+          <p className="text-gray-800 dark:text-gray-200 text-lg font-medium">{t('subtitle', language)}</p>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <label className="text-sm font-medium text-gray-700">{t('selectLanguage', language)}:</label>
+            <label className="text-sm font-medium text-gray-900 dark:text-gray-100">{t('selectLanguage', language)}:</label>
             <div className="flex gap-2">
               <Button
                 variant={language === 'en' ? 'default' : 'outline'}
